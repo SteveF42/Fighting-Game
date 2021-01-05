@@ -8,12 +8,12 @@ void Character::choose_computer_attacks(){
     //do some random shit to choose computer attacks
 }
 
-void Character::update_player_stats(double health_stat, double attack_stat, double shield_stat, float crit, double crit_multiplier)
+void Character::update_player_stats(double health_stat, double attack_stat, double shield_stat, float crit_chance, double crit_multiplier)
 {
     this->base_health += health_stat;
     this->base_attack += attack_stat;
     this->base_shield += shield_stat;
-    this->crit_chance += crit;
+    this->crit_chance += crit_chance;
     this->crit_multiplier += crit_multiplier;
 }
 void Character::display_player_stats()
@@ -43,19 +43,19 @@ void Character::attack(Character *other){
     std::cout << "\nOpponents stats\n";
     other->display_player_stats();
 
-    bool skip_turn;
+    //checks if the player has been effected with anything
     for(auto it = this->effects.begin(), next_it = it; it!= effects.end(); it=next_it){
         next_it++;
 
         const int damage = std::get<0>(it->second);
         int* turns_left = &std::get<1>(it->second);
         if(*turns_left > 0){
-            std::cout << "\nYou have been affected with (" << it->first << ") effect lasting " << *turns_left << " turn(s)!"<< '\n';
+            std::cout << "\nYou have been affected with (" << it->first << ") effect, lasting " << *turns_left << " turn(s)!"<< '\n';
             *turns_left -= 1;
             this->base_health -= damage;
 
-            if(it->first == "Stun"){
-                std::cout << "You have been stunned! Your turn is being skipped!\n";
+            if(it->first == "Stun" || it->first == "Frost" || it->first == "Cooldown"){
+                std::cout << "Looks like Your're unable to move! Your turn is being skipped!\n";
                 std::cout << "Press enter to continue... \n";
                 std::cin.ignore();
                 char c = std::cin.get();

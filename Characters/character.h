@@ -35,12 +35,13 @@ public:
     int get_pp(){return this->PP_points;}
     void update_pp(int pp){this->PP_points -= pp;}
 
+    //<effect name,<damage,effects>>
     std::unordered_map<string_std,std::tuple<int,int>> effects;
 protected:
-    double base_health = 100;
+    double base_health = 150;
     double base_attack = 10;
     double crit_chance = 10;
-    double crit_multiplier = 0.25;
+    double crit_multiplier = 0.15;
     double base_shield = 150;
     int PP_points = 20;
     float armor_hit_percent = 0.35;
